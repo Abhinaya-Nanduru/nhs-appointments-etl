@@ -115,6 +115,82 @@ The project follows an ETL approach:
 * Dataset grains documented
 * Five known data-quality issues documented
 
-## Next Stage
+## Week 2 - Transform and Clean
 
-Week 2 will focus on transforming and cleaning the raw data and producing tested Parquet files.
+Week 2 implements the clean layer of the NHS GP Appointments ETL pipeline. The raw datasets produced in Week 1 are transformed, standardised, validated and written as Parquet files.
+
+### Transformations
+
+The Week 2 transformation process:
+
+* Reads the raw NHS source files without modifying them.
+* Uses declared schemas for the CSV datasets.
+* Reads the duration Excel source using pandas.
+* Removes the hidden BOM from category column names.
+* Parses category appointment dates using day-first date handling.
+* Aggregates look-alike regional rows by summing appointment counts rather than dropping them.
+* Standardises categorical labels and whitespace.
+* Keeps appointment counts as whole numbers.
+* Adds cleaned date/month columns while retaining source columns.
+* Writes clean datasets as Parquet partitioned by month.
+
+### Validation Results
+
+| Dataset    | Appointment Total |
+| ---------- | ----------------: |
+| Regional   |       742,804,525 |
+| Categories |       296,046,770 |
+| Duration   |       167,980,692 |
+
+The regional dataset was aggregated from **596,821 raw rows to 295,692 clean rows** while preserving the appointment total of **742,804,525**.
+
+### Testing
+
+A pytest suite validates:
+
+* Regional row count
+* Appointment totals
+* Unique regional grain
+* Positive appointment counts
+* Clean categorical labels
+* Category day-first date parsing
+* Duration date parsing
+
+### Pipeline Automation
+
+`run_pipeline.py` runs the pipeline in sequence:
+
+`Extract → Transform → Validate → Clean Parquet`
+
+The pipeline was executed twice consecutively and produced identical row counts and appointment totals, demonstrating idempotent behaviour.
+
+### Data Model
+
+The proposed warehouse uses three fact tables because the source datasets have different grains:
+
+* `fact_appointments_monthly`
+* `fact_appointments_by_category`
+* `fact_appointments_by_duration`
+
+Shared dimensions will describe date, geography, booking-wait bands, duration bands and national categories.
+
+The detailed design is documented in:
+
+* `docs/decision_log.md`
+* `docs/star_schema.md`
+* `docs/architecture.md`
+
+### Week 2 Status
+
+* Clean transformation implemented
+* All five known source-data issues handled
+* Regional aggregation completed
+* Required appointment totals validated
+* Clean Parquet outputs created
+* pytest validation suite created
+* Decision log completed
+* Star schema designed
+* Pipeline architecture documented
+* Extract and transform pipeline automated
+* Pipeline successfully executed twice with identical results
+
