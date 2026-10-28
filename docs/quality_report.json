@@ -1,0 +1,54 @@
+{
+  "summary": {
+    "total_checks": 9,
+    "passed": 9,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "check": "1. Monthly fact total",
+      "status": "PASS",
+      "detail": "actual=742,804,525, expected=742,804,525"
+    },
+    {
+      "check": "2. Category fact total",
+      "status": "PASS",
+      "detail": "actual=296,046,770, expected=296,046,770"
+    },
+    {
+      "check": "3. Duration fact total",
+      "status": "PASS",
+      "detail": "actual=167,980,692, expected=167,980,692"
+    },
+    {
+      "check": "4. Regional/category monthly reconciliation",
+      "status": "PASS",
+      "detail": "months_different=0, expected=0"
+    },
+    {
+      "check": "5. Geography orphan rows",
+      "status": "PASS",
+      "detail": "category_orphans=0, duration_orphans=0, expected=0"
+    },
+    {
+      "check": "6. Known booking-wait bands",
+      "status": "PASS",
+      "detail": "unknown_rows=0, expected=0"
+    },
+    {
+      "check": "7. Known duration bands",
+      "status": "PASS",
+      "detail": "unknown_rows=0, expected=0"
+    },
+    {
+      "check": "8. Category dates and counts not null",
+      "status": "PASS",
+      "detail": "null_rows=0, expected=0"
+    },
+    {
+      "check": "9. Duration monthly coverage",
+      "status": "PASS",
+      "detail": "lowest_coverage=90.90%, expected>=90%"
+    }
+  ]
+}
